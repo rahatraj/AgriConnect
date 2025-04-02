@@ -1,0 +1,54 @@
+services:
+  - type: web
+    name: agriconnect-backend
+    env: node
+    buildCommand: npm install
+    startCommand: npm run prod
+    envVars:
+      # Server Configuration
+      - key: PORT
+        value: 3000
+      - key: NODE_ENV
+        value: production
+      - key: FRONTEND_URL
+        sync: false
+      
+      # Database
+      - key: DB_URL
+        sync: false
+      
+      # Authentication
+      - key: ADMIN_SECRET_TOKEN
+        sync: false
+      - key: ADMIN_ID
+        sync: false
+      - key: JWT_SECRET_KEY
+        sync: false
+      
+      # Cloud Storage
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_SECRET_KEY
+        sync: false
+      
+      # Geolocation
+      - key: GEOLOCATION_API_KEY
+        sync: false
+      
+      # Payment Gateway
+      - key: STORAGE_CANCELLATION_PERCENTAGE
+        value: 10
+      - key: RAZORPAY_API_KEY_ID
+        sync: false
+      - key: RAZORPAY_SECRET_KEY
+        sync: false
+      - key: RAZORPAY_LINK
+        sync: false
+      - key: RAZORPAY_PAYOUT_ACCOUNT
+        sync: false
+      - key: PLATEFORM_CHARGE
+        value: 10
+    healthCheckPath: /health
+    autoDeploy: true 
