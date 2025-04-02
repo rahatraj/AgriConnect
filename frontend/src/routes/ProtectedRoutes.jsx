@@ -9,13 +9,13 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
   const { isLoggedIn, data, authChecked, error } = useSelector((state) => state.users);
   const userRole = data?.user?.role;
 
-  useEffect(() => {
-    if (authChecked && !isLoggedIn) {
-      toast.error("Please login to continue");
-    } else if (authChecked && allowedRoles && !allowedRoles.includes(userRole)) {
-      toast.error("You don't have permission to access this page");
-    }
-  }, [authChecked, isLoggedIn, allowedRoles, userRole]);
+  // useEffect(() => {
+  //   if (authChecked && !isLoggedIn) {
+  //     toast.error("Please login to continue");
+  //   } else if (authChecked && allowedRoles && !allowedRoles.includes(userRole)) {
+  //     toast.error("You don't have permission to access this page");
+  //   }
+  // }, [authChecked, isLoggedIn, allowedRoles, userRole]);
 
   if (error) {
     return <ErrorComponent message={error} />;
