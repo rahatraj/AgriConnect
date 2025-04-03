@@ -73,6 +73,7 @@ const userSlice = createSlice({
     clearUserState: (state) => {
       state.data = null;
       state.isLoggedIn = false;
+      state.authChecked = false; 
       state.error = null;
     }
   },
@@ -128,12 +129,13 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
         state.isLoggedIn = false;
+        state.authChecked = true;
       })
       // Logout
       .addCase(userLogout.fulfilled, (state) => {
         state.data = null;
         state.isLoggedIn = false;
-        state.authChecked = true;
+        state.authChecked = false;
         state.error = null;
       })
       .addCase(userLogout.rejected, (state, action) => {
