@@ -28,9 +28,8 @@ app.use(cookieParser())
 // CORS configuration
 const allowedOrigins = process.env.NODE_ENV === 'production' 
     ? 'https://agriconnect-bid.netlify.app' 
-    : ['http://localhost:5173', 'http://localhost:5174']
+    : 'http://localhost:5173'
 
-console.log(allowedOrigins)
 
 app.use(cors({
     origin: allowedOrigins,
