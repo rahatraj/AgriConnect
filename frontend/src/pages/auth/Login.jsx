@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { userLogin } from '../../redux/slices/userSlice';
+import { fetchCurrentUser, userLogin } from '../../redux/slices/userSlice';
 import toast from 'react-hot-toast';
 import { Eye, EyeOff, Lock, Mail, Loader2 } from 'lucide-react';
 import ErrorComponent from '../../components/common/ErrorComponent';
@@ -14,11 +14,21 @@ const formInitial = {
 function Login() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { isLoading, error } = useSelector((state) => state.users);
-    
+    const { data,isLoading, error } = useSelector((state) => state.users);
     const [showPassword, setShowPassword] = useState(false);
     const [formData, setFormData] = useState(formInitial);
 
+    useEffect(()=> {
+        if (data?.user?.role && window.location.pathname === "/login") {
+            switch (data.user.role) {
+                case "Farmer": navigate('/farmer/dashboard'); break;
+                case "Buyer": navigate('/buyer-dashboard'); break;
+                case "StorageOwner": navigate('/storage-dashboard'); break;
+                case "Admin": navigate('/admin-dashboard'); break;
+                default: navigate('/');
+            }
+        }
+    }, [data?.user?.role, navigate])
     const validateForm = () => {
         if (!formData.email.trim()) {
             toast.error("email is required");
@@ -43,21 +53,14 @@ function Login() {
         e.preventDefault();
 
         if (!validateForm()) return;
-
-        const result = await dispatch(userLogin(formData));
-        if (result.meta.requestStatus === "fulfilled") {
-            const role = result.payload.user.role;
+        try {
+            await dispatch(userLogin(formData)).unwrap();
+            await dispatch(fetchCurrentUser());
             setFormData(formInitial)
-            switch (role) {
-                case "Farmer": navigate('/farmer/dashboard'); break;
-                case "Buyer": navigate('/buyer-dashboard'); break;
-                case "StorageOwner": navigate('/storage-dashboard'); break;
-                case "Admin": navigate('/admin-dashboard'); break;
-                default: navigate('/');
-            }
+        } catch (error) {
+            toast.error("Login failed. Please try again")
         }
     };
-
     if(error){
         return <ErrorComponent message={error} />
     }
