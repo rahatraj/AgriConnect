@@ -11,23 +11,24 @@ function App() {
   const dispatch = useDispatch();
   const { authChecked, isLoggedIn } = useSelector((state) => state.users);
 
+  console.log("authchecked ",authChecked)
   // Fetch Current User and handle authentication state
   useEffect(() => {
     const checkAuth = async () => {
       if (!authChecked) {
         try {
-          // Try to fetch user data - the token will be automatically sent with the request
           await dispatch(fetchCurrentUser()).unwrap();
         } catch (error) {
           // If fetch fails, clear the state
           dispatch(clearUserState());
+        }finally{
           dispatch(setAuthChecked(true));
         }
       }
     };
 
     checkAuth();
-  }, [dispatch, authChecked]);
+  }, [dispatch, authChecked, isLoggedIn]);
 
   // Connect socket only when user is logged in
   useEffect(() => {
