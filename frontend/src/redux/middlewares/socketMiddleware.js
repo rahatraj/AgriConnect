@@ -5,12 +5,13 @@ import { addNotification } from "../slices/NotificationSlice";
 
 
 let socket = null;
-
+const baseURL=import.meta.env.VITE_API_URL
+const localURL="http://localhost:3000/api/v1"
 const socketMiddleware = (store) => (next) => (action) => {
     switch (action.type) {
         case "socket/connectSocket":
             if (!socket) {
-                socket = io(import.meta.env.VITE_API_URL, {
+                socket = io(baseURL, {
                     withCredentials: true,
                     transports: ["websocket"],
                     autoConnect: true, // Auto-reconnect on refresh
