@@ -113,7 +113,7 @@ function ProductsPage() {
       {/* Product List Section */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
         {productData?.products?.length > 0 ? (
-          productData.products.map((product) => (
+          productData?.products?.map((product) => (
             <ProductCard key={product?._id} product={product} sliderSettings={sliderSettings} />
           ))
         ) : (

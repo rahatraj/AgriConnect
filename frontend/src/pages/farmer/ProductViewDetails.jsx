@@ -28,10 +28,10 @@ function ProductViewDetails() {
             {/* Display Product Images */}
             {selectedProduct?.productImages?.length > 0 && (
               <div className="carousel w-full mt-4">
-                {selectedProduct?.productImages.map((image, index) => (
+                {selectedProduct?.productImages?.map((image, index) => (
                   <div key={index} className="w-full h-[250px]">
                     <img
-                      src={image.url}
+                      src={image?.url}
                       alt={`Product ${index}`}
                       className="w-full h-full object-cover rounded-lg"
                     />

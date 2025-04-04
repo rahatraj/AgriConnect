@@ -77,13 +77,15 @@ function BidViewDetailsPage() {
 
           <div className="card bg-base-100 shadow-xl mt-4 p-6">
             <h2 className="text-xl font-bold text-secondary mb-4">Bidding Status</h2>
-            {selectedBid && <BiddingStatus deadline={selectedBid.biddingDeadLine} />}
+            {selectedBid && <BiddingStatus deadline={selectedBid?.biddingDeadLine} />}
           </div>
 
           {currentUser?.user?.role === "Buyer" && selectedBid?.bidStatus === "Close" && (
             <div className="card bg-base-100 shadow-xl mt-4 p-6">
               <h2 className="text-xl font-semibold text-info mb-4">Farm Location</h2>
-              <ProductLocation geoCoordinates={selectedBid?.product?.geoCoordinates} bidStatus={selectedBid?.bidStatus} />
+              <ProductLocation geoCoordinates={selectedBid?.product?.geoCoordinates} 
+                bidStatus={selectedBid?.bidStatus} 
+              />
             </div>
           )}
         </div>
@@ -97,7 +99,7 @@ function BidViewDetailsPage() {
               </div>
             )}
             <h2 className="text-xl font-bold text-accent mb-4">Bid History</h2>
-            <BidHistory bids={selectedBid.bidders} bidId={selectedBid._id} />
+            <BidHistory bids={selectedBid?.bidders} bidId={selectedBid?._id} />
           </div>
         </div>
       </div>

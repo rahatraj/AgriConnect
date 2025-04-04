@@ -37,7 +37,7 @@ function ProductCard({ product, sliderSettings }) {
       <div className="flex flex-wrap items-center justify-between">
         <div>
             <p className="text-gray-500 text-sm md:text-base">
-              Category: {product.category}
+              Category: {product?.category}
             </p>
             <p className="text-gray-700 text-sm md:text-base">
               {product?.productDescription}

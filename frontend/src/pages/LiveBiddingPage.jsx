@@ -128,15 +128,15 @@ function LiveBiddingPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         <div className="lg:col-span-2 order-2 lg:order-1">
-          {selectedBid.bidStatus === "Close" && selectedBid.winner && (
+          {selectedBid?.bidStatus === "Close" && selectedBid?.winner && (
             <div className="card bg-success text-white shadow-xl mt-4 p-6">
               <h2 className="lg:text-xl font-bold text-white mb-4">Winner Information</h2>
-              <WinnerInfo winner={selectedBid.winner} winningAmount={selectedBid.currentHighestBid} />
+              <WinnerInfo winner={selectedBid?.winner} winningAmount={selectedBid?.currentHighestBid} />
             </div>
           )}
           <div className="card bg-base-100 shadow-xl mt-4 p-6">
             <h2 className="lg:text-xl font-bold text-secondary mb-4">Bidding Status</h2>
-            <BiddingStatus deadline={selectedBid.biddingDeadLine} />
+            <BiddingStatus deadline={selectedBid?.biddingDeadLine} />
           </div>
           <div className="card bg-base-100 shadow-xl p-6 lg:mt-10">
             <h2 className="lg:text-xl font-bold text-primary mb-4">Product Information</h2>
@@ -144,7 +144,7 @@ function LiveBiddingPage() {
           </div>
         </div>
         <div className="lg:col-span-2 order-1 lg:order-2">
-          {currentUser?.user?.role === "Buyer" && selectedBid.bidStatus === "Open" && (
+          {currentUser?.user?.role === "Buyer" && selectedBid?.bidStatus === "Open" && (
             <div className="mt-6 card bg-base-100 shadow-xl p-6 text-center">
               <h2 className="text-xl font-bold text-secondary">Place Your Bid</h2>
               <input
@@ -171,7 +171,7 @@ function LiveBiddingPage() {
       </div>
       <div className="mt-6 flex justify-between">
         <button onClick={() => navigate(-1)} className="btn btn-secondary">Back</button>
-        {currentUser?.user?.role === "Farmer" && selectedBid.bidStatus === "Open" && (
+        {currentUser?.user?.role === "Farmer" && selectedBid?.bidStatus === "Open" && (
           <button className="btn btn-error" onClick={() => setIsModalOpen(true)}>Close Bid</button>
         )}
         {isModalOpen && (
