@@ -100,7 +100,7 @@ function AllBidsPage() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
           {allBids?.length > 0 ? (
-            allBids?.map((bid) => <BidCard key={bid._id} bid={bid} />)
+            allBids?.map((bid) => <BidCard key={bid?._id} bid={bid} />)
           ) : (
             <NoBidsFound 
               heading={`No Bids Founds`}
