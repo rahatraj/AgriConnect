@@ -97,6 +97,8 @@ const userSlice = createSlice({
         state.isLoggedIn = false;
         state.authChecked = true;
         state.error = action.payload;
+
+        localStorage.removeItem("isLoggedIn"); 
       })
       // User Register
       .addCase(userRegister.pending, (state) => {
@@ -124,6 +126,8 @@ const userSlice = createSlice({
         state.isLoggedIn = true;
         state.authChecked = true;
         state.error = null;
+
+        localStorage.setItem("isLoggedIn", "true"); 
       })
       .addCase(userLogin.rejected, (state, action) => {
         state.loading = false;
@@ -135,11 +139,14 @@ const userSlice = createSlice({
       .addCase(userLogout.fulfilled, (state) => {
         state.data = null;
         state.isLoggedIn = false;
-        state.authChecked = false;
+        state.authChecked = true;
         state.error = null;
+
+        localStorage.removeItem("isLoggedIn");
       })
       .addCase(userLogout.rejected, (state, action) => {
         state.error = action.payload;
+        state.authChecked = true;
       });
   },
 });
