@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 function BidHistory({ bidId }) {
   const bidHistoryFromRedux = useSelector((state) =>
-    state.bids.selectedBid?.bidders || []
+    state?.bids?.selectedBid?.bidders || []
   );
   const [bidHistory, setBidHistory] = useState(bidHistoryFromRedux);
 
@@ -17,7 +17,7 @@ function BidHistory({ bidId }) {
     <div className="bg-white p-6 rounded-lg shadow-md mt-4 border">
       <h2 className="text-lg font-bold text-gray-900">📜 Bid History</h2>
 
-      {bidHistory.length === 0 ? (
+      {bidHistory?.length === 0 ? (
         <p className="text-gray-500 mt-2">No bids placed yet.</p>
       ) : (
         <ul className="mt-4 space-y-3">
