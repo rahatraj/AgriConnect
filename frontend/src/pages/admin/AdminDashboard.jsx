@@ -28,8 +28,8 @@ function AdminDashboard() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (notifications.length > 0) {
-      toast.success(notifications[0].message);
+    if (notifications?.length > 0) {
+      toast.success(notifications[0]?.message);
     }
   }, [notifications])
 
