@@ -109,7 +109,7 @@ userCltr.logout = async(req,res,next) => {
         res.cookie('token', "", {
             maxAge: 0,
             httpOnly: true,
-            sameSite: "lax",
+            sameSite: "None",
             secure: process.env.NODE_ENV === 'production'
         })
         return res.status(200).json({
