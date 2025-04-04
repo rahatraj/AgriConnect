@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { userRegister } from '../../redux/slices/userSlice';
 import toast from 'react-hot-toast';
 import { Eye, EyeOff, Lock, Mail, Loader2, User, Key } from 'lucide-react';
+import ErrorComponent from '../../components/common/ErrorComponent';
 
 const formInitial = {
     fullName: "",
@@ -16,9 +17,10 @@ const formInitial = {
 function Register() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { isLoading } = useSelector((state) => state.users);
+    const { isLoading,error } = useSelector((state) => state.users);
     const [showPassword, setShowPassword] = useState(false);
     const [formData, setFormData] = useState(formInitial);
+    const [showError, setShowError] = useState(true);
 
     const validateForm = () => {
         if (!formData.fullName.trim()) {
@@ -50,7 +52,9 @@ function Register() {
             navigate("/login");
         }
     };
-
+    if (error && showError) {
+        return <ErrorComponent message={error} onDismiss={() => setShowError(false)} />;
+    }
     return (
         <div className="min-h-screen flex items-center justify-center bg-cover bg-center bg-green-100 p-6">
             <div className="card bg-white/35 shadow-2xl w-full max-w-lg p-6 rounded-2xl backdrop-blur-md bg-opacity-0">

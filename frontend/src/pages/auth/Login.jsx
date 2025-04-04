@@ -17,6 +17,7 @@ function Login() {
     const { data,isLoading, error, isLoggedIn } = useSelector((state) => state.users);
     const [showPassword, setShowPassword] = useState(false);
     const [formData, setFormData] = useState(formInitial);
+    const [showError, setShowError] = useState(true);
 
     useEffect(()=> {
         if (isLoggedIn && data?.user?.role && window.location.pathname === "/login") {
@@ -61,8 +62,8 @@ function Login() {
             toast.error("Login failed. Please try again")
         }
     };
-    if(error){
-        return <ErrorComponent message={error} />
+    if (error && showError) {
+        return <ErrorComponent message={error} onDismiss={() => setShowError(false)} />;
     }
     return (
     <div 
