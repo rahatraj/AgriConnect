@@ -10,7 +10,8 @@ const ProfilePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { profile, loading, error } = useSelector((state) => state.profile);
-
+  const [showError, setShowError] = useState(true);
+  
   useEffect(() => {
     dispatch(getProfile());
   }, [dispatch]);
@@ -22,8 +23,8 @@ const ProfilePage = () => {
       </div>
     );
   }
-  if(error){
-    <ErrorComponent message={error} />
+  if (error && showError) {
+    return <ErrorComponent message={error} onDismiss={() => setShowError(false)} />;
   }
   
   return (

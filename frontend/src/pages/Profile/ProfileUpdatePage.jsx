@@ -11,6 +11,7 @@ const ProfileUpdatePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { profile, loading, error } = useSelector((state) => state.profile);
+  const [showError, setShowError] = useState(true);
 
   // Local state for form fields
   const [formData, setFormData] = useState({
@@ -83,8 +84,8 @@ const ProfileUpdatePage = () => {
       </div>
     );
   }
-  if(error){
-    <ErrorComponent message={error} />
+  if (error && showError) {
+    return <ErrorComponent message={error} onDismiss={() => setShowError(false)} />;
   }
   return (
     <div className="min-h-screen flex items-center justify-center bg-base-100 p-4">
