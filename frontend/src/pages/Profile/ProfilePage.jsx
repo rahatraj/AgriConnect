@@ -81,7 +81,7 @@ const ProfilePage = () => {
                 onClick={() => navigate("/profile/update")}
                 className="btn btn-primary w-full"
               >
-                Edit Profile
+                Update Profile
               </button>
 
               <button
