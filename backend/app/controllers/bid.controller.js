@@ -537,7 +537,7 @@ bidCltr.viewMyOngoingBids = async (req, res, next) => {
             .populate({
                 path: "product",
                 match: { farmer: userId }, // Ensure the product belongs to the current farmer
-                select: "productName category description"
+                select: "productName category description productImages"
             })
             .sort(sortQuery)
             .skip(skip)
