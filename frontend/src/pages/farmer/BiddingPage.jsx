@@ -12,7 +12,8 @@ import ErrorComponent from "../../components/common/ErrorComponent";
 function AllBidsPage() {
   const dispatch = useDispatch();
   const { activeBids, pagination, loading,error } = useSelector((state) => state.bids);
-
+  const [showError, setShowError] = useState(true);
+  
   // State for filters, search, sorting, and pagination
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("");
@@ -38,9 +39,10 @@ function AllBidsPage() {
     );
   }
 
-  if(error){
-    <ErrorComponent message={error} />
+  if (error && showError) {
+    return <ErrorComponent message={error} onDismiss={() => setShowError(false)} />;
   }
+
   return (
     <div className="container mx-auto px-4 py-6">
       <div className="text-center mb-6">

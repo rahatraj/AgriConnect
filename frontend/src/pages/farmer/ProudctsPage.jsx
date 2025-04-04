@@ -12,6 +12,7 @@ import ErrorComponent from "../../components/common/ErrorComponent";
 function ProductsPage() {
   const dispatch = useDispatch();
   const { productData, loading, error } = useSelector((state) => state.products);
+  const [showError, setShowError] = useState(true);
 
   // Sorting, filtering, and pagination
   const [search, setSearch] = useState("");
@@ -55,8 +56,8 @@ function ProductsPage() {
     );
   }
 
-  if (error) {
-    return <ErrorComponent message={error} />;
+  if (error && showError) {
+    return <ErrorComponent message={error} onDismiss={() => setShowError(false)} />;
   }
 
   return (
