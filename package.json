@@ -1,0 +1,12 @@
+{
+  "name": "agriconnect",
+  "version": "1.0.0",
+  "description": "A full-stack web application connecting farmers and storage facilities.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
