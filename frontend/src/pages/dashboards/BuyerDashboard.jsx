@@ -81,10 +81,11 @@ function BuyerDashboard() {
     );
   }
 
-  if (error) {
-    return <ErrorComponent message={error}/>;
-  }
-
+  
+ if((dashboardData?.totalActiveBids !== 0 && dashboardData?.lostBids !== 0
+    && dashboardData?.recentBids !== 0 && dashboardData?.wonBids) && error ){
+      return <ErrorComponent message={error}/>
+ }
   const bidData = dashboardData.recentBids.map((bid) => ({
     name: bid.bidTitle,
     amount: bid.bidAmount,
@@ -109,7 +110,7 @@ function BuyerDashboard() {
   const sortedBidPerformanceData = [...bidPerformanceData].sort(
     (a, b) => new Date(a.date) - new Date(b.date)
   );
-  console.log("recommendations ", dashboardData?.recommendedBids)
+ 
   return (
     <div className="p-6">
       <h2 className="text-2xl font-semibold mb-4 text-center">
