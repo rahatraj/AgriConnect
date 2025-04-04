@@ -37,10 +37,10 @@ function ProductDetailsModal({ product, isOpen, onClose }) {
                 {/* Display Product Images */}
                 {product?.productImages?.length > 0 && (
                 <div className="w-full mt-4 grid grid-cols-2 gap-2">
-                    {product.productImages.map((image, index) => (
+                    {product?.productImages?.map((image, index) => (
                     <div key={index} className="w-full h-[120px] sm:h-[150px]">
                         <img
-                        src={image.url}
+                        src={image?.url}
                         alt={`Product ${index}`}
                         className="w-[100px] h-[100px] object-cover rounded-lg"
                         />
