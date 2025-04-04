@@ -92,7 +92,7 @@ userCltr.login = async(req,res, next)=>{
         return res.cookie('token', token, {
             maxAge: 7 * 24 * 60 * 60 * 1000,
             httpOnly: true,
-            sameSite: "lax",
+            sameSite: "None",
             secure: process.env.NODE_ENV === 'production'
         }).json({
             success : true,
