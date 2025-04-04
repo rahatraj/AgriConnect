@@ -12,14 +12,16 @@ AgriConnect/
 ```
 
 ## Features
-
-- User Authentication
-- Product Management
-- Storage Facility Management
-- Bidding System
-- Payment Integration
-- Real-time Updates
-- Geolocation Services
+- 🔐 **Secure Authentication** (JWT-based login/register)
+- 👥 **Role-Based Dashboards**: Farmer, Buyer, Storage Manager, Admin
+- 📦 **Product & Storage Management**: Add, view, and manage agri-products and storage facilities
+- ⚡ **Real-Time Bidding System**: Live bidding with instant updates via Socket.IO
+- 💸 **Razorpay Payment Integration**: Fast, secure payments
+- 💰 **Wallet System**: Manage funds with deposits, withdrawals & referral bonus
+- 📍 **Geolocation Services**: View location-based storage
+- 🔔 **Real-Time Notifications**: Bidding updates, bid wins, and transactions
+- 📊 **Bid History & Transaction Logs**: Track past bids and wallet transactions
+- 🌐 **Multi-language Support** *(Planned)*
 
 ## Tech Stack
 
