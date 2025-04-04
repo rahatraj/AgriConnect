@@ -12,10 +12,10 @@ function App() {
   const { authChecked, isLoggedIn } = useSelector((state) => state.users);
 
   console.log("authchecked ",authChecked)
-  // Fetch Current User and handle authentication state
   useEffect(() => {
     const checkAuth = async () => {
-      if (!authChecked) {
+      const hasClientLoginFlag = localStorage.getItem("isLoggedIn") === "true";
+      if (!authChecked && hasClientLoginFlag) {
         try {
           await dispatch(fetchCurrentUser()).unwrap();
         } catch (error) {
@@ -30,7 +30,6 @@ function App() {
     checkAuth();
   }, [dispatch, authChecked, isLoggedIn]);
 
-  // Connect socket only when user is logged in
   useEffect(() => {
     if (authChecked && isLoggedIn) {
       const timer = setTimeout(() => {
@@ -40,14 +39,6 @@ function App() {
       return () => clearTimeout(timer);
     }
   }, [dispatch, authChecked, isLoggedIn]);
-
-  if (!authChecked) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <Loader className="size-10 animate-spin" />
-      </div>
-    );
-  }
 
   return (
     <>
