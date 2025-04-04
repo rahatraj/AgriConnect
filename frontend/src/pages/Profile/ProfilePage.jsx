@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getProfile } from "../../redux/slices/profileSlice";
@@ -11,7 +11,7 @@ const ProfilePage = () => {
   const navigate = useNavigate();
   const { profile, loading, error } = useSelector((state) => state.profile);
   const [showError, setShowError] = useState(true);
-  
+
   useEffect(() => {
     dispatch(getProfile());
   }, [dispatch]);

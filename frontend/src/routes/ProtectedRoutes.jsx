@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { Loader } from "lucide-react";
@@ -9,7 +9,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
   const { isLoggedIn, data, authChecked, error } = useSelector((state) => state.users);
   const userRole = data?.user?.role;
   const [showError, setShowError] = useState(true);
-  
+
   useEffect(() => {
     if (authChecked && !isLoggedIn) {
       toast.error("Please login to continue");

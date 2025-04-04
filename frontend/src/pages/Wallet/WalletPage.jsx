@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // import useSocket from "../../hooks/useSocket";
 import { getWalletDetails } from "../../redux/slices/walletSlice";
@@ -15,7 +15,7 @@ function WalletPage() {
     const navigate = useNavigate()
     const { wallet, loading, error } = useSelector((state) => state.wallet)
     const [showError, setShowError] = useState(true);
-    
+
     useEffect(() => {
         dispatch(getWalletDetails());
         if (socket) {
