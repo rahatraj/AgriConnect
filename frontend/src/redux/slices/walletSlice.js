@@ -10,6 +10,11 @@ export const getWalletDetails = createAsyncThunk(
       const response = await axiosInstance.get("/wallets/details");
       return response.data;
     } catch (error) {
+      console.log(error)
+      if (error?.status === 404) {
+        // Wallet not created
+        return rejectWithValue("WALLET_NOT_CREATED");
+      }
       return rejectWithValue(error?.response?.data?.message || "Failed to fetch wallet details");
     }
   }
@@ -98,6 +103,7 @@ const walletSlice = createSlice({
         // wallet details
       .addCase(getWalletDetails.pending, (state) => {
             state.loading = true;
+            state.error = false;
         })
       .addCase(getWalletDetails.fulfilled, (state, action) => {
         state.wallet = action.payload.wallet;
