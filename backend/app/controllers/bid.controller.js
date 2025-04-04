@@ -506,55 +506,59 @@ bidCltr.viewMyOngoingBids = async (req, res, next) => {
         const limitNumber = parseInt(limit, 10);
         const skip = (pageNumber - 1) * limitNumber;
 
-        // Build the Filter Object for Aggregation
-        let matchQuery = {
-            "product.farmer" : userId
-        };
+        // Aggregation Pipeline
+        const pipeline = [
+            {
+                $lookup: {
+                    from: "products",
+                    localField: "product",
+                    foreignField: "_id",
+                    as: "product"
+                }
+            },
+            { $unwind: "$product" }, // Unwind product to make it accessible
+            { 
+                $match: { "product.farmer": userId } // Ensure farmer is the logged-in user
+            }
+        ];
 
-        // Build the Filter Object for Aggregation
+        // Apply Filters
         if (status && status !== "All") {
-            matchQuery.bidStatus = status;
+            pipeline.push({ $match: { bidStatus: status } });
         }
 
-        // Filter by Category
         if (category) {
-            matchQuery["product.category"] = category;
+            pipeline.push({ $match: { "product.category": category } });
         }
 
-        // Apply Search Query to `productName` and `productDescription`
         if (search) {
-            matchQuery["$or"] = [
-                { "product.productName": { $regex: search, $options: "i" } },
-                { "product.productDescription": { $regex: search, $options: "i" } }
-            ];
+            pipeline.push({
+                $match: {
+                    $or: [
+                        { "product.productName": { $regex: search, $options: "i" } },
+                        { "product.productDescription": { $regex: search, $options: "i" } }
+                    ]
+                }
+            });
         }
-        // Sorting 
+
+        // Sorting
         let sortQuery = {};
         if (sort === "basePrice") {
-            sortQuery["basePrice"] = 1; // Sort by lowest base price
+            sortQuery["basePrice"] = 1;
         } else {
-            sortQuery["biddingDeadLine"] = 1; // Default sorting by bidding end time
+            sortQuery["biddingDeadLine"] = 1;
         }
+        pipeline.push({ $sort: sortQuery });
 
-        // Fetch Ongoing Bids Using Aggregation Pipeline
-        const bids = await Bid.aggregate([
-            {
-                $lookup: {
-                    from: "products",
-                    localField: "product",
-                    foreignField: "_id",
-                    as: "product"
-                }
-            },
-            { $unwind: "$product" },
-            { $match: matchQuery },
-            { $sort: sortQuery },
-            { $skip: skip },
-            { $limit: limitNumber }
-        ]);
+        // Pagination
+        pipeline.push({ $skip: skip }, { $limit: limitNumber });
+
+        // Fetch Ongoing Bids
+        const bids = await Bid.aggregate(pipeline);
 
         // Total Count for Pagination
-        const total = await Bid.aggregate([
+        const totalCount = await Bid.aggregate([
             {
                 $lookup: {
                     from: "products",
@@ -564,9 +568,11 @@ bidCltr.viewMyOngoingBids = async (req, res, next) => {
                 }
             },
             { $unwind: "$product" },
-            { $match: matchQuery },
+            { $match: { "product.farmer": userId } },
             { $count: "total" }
         ]);
+
+        const total = totalCount.length > 0 ? totalCount[0].total : 0;
 
         if (bids.length === 0) {
             return res.status(200).json({
@@ -591,7 +597,7 @@ bidCltr.viewMyOngoingBids = async (req, res, next) => {
                 total,
                 page: pageNumber,
                 limit: limitNumber,
-                totalPages: Math.ceil((total.length > 0 ? total[0].total : 0) / limitNumber),
+                totalPages: Math.ceil(total / limitNumber),
             }
         });
 
