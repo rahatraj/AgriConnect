@@ -495,7 +495,7 @@ bidCltr.viewMyOngoingBids = async (req, res, next) => {
 
     try {
         const { page = 1, limit = 10, status,category, search, sort = "biddingDeadLine" } = req.query;
-        const userId = req.currentUser.userId;
+        const userId = (req.currentUser.userId);
         const role = req.currentUser.role;
 
         if (role !== "Farmer") {
@@ -507,15 +507,14 @@ bidCltr.viewMyOngoingBids = async (req, res, next) => {
         const skip = (pageNumber - 1) * limitNumber;
 
         // Build the Filter Object for Aggregation
-        let matchQuery = {};
+        let matchQuery = {
+            "product.farmer" : userId
+        };
 
         // Build the Filter Object for Aggregation
         if (status && status !== "All") {
             matchQuery.bidStatus = status;
         }
-
-        // Filter by Farmer's Products
-        matchQuery["product.farmer"] = new mongoose.Types.ObjectId(userId);
 
         // Filter by Category
         if (category) {
@@ -568,6 +567,22 @@ bidCltr.viewMyOngoingBids = async (req, res, next) => {
             { $match: matchQuery },
             { $count: "total" }
         ]);
+
+        if (bids.length === 0) {
+            return res.status(200).json({
+              success: true,
+              message: "No bids found. Please add products to participate in bidding.",
+              bids: [],
+              pagination: {
+                total: 0,
+                page: pageNumber,
+                limit: limitNumber,
+                totalPages: 0,
+              },
+            });
+          }
+          
+
         return res.status(200).json({
             success: true,
             message: "Ongoing bids fetched successfully.",
