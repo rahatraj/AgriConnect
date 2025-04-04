@@ -112,11 +112,11 @@ function ManageUsers() {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {filteredUsers?.map((user) => (
-              <tr key={user._id}>
+              <tr key={user?._id}>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center">
                     <div>
-                      <div className="text-sm font-medium text-gray-900">{user.fullName}</div>
+                      <div className="text-sm font-medium text-gray-900">{user?.fullName}</div>
                       <div className="text-sm text-gray-500">{user.email}</div>
                     </div>
                   </div>
@@ -128,14 +128,14 @@ function ManageUsers() {
                 </td>
                 <td className="flex px-3 gap-4 items-center py-4 whitespace-nowrap">
                   <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                    user.status === 'Active' ? 'bg-green-100 text-green-800' :
-                    user.status === 'Suspend' ? 'bg-yellow-100 text-yellow-800' :
+                    user?.status === 'Active' ? 'bg-green-100 text-green-800' :
+                    user?.status === 'Suspend' ? 'bg-yellow-100 text-yellow-800' :
                     'bg-red-100 text-red-800'
                   }`}>
-                    {user.status}
+                    {user?.status}
                   </span>
                   <span>
-                    {user.status === "Active" ? (
+                    {user?.status === "Active" ? (
                         <CheckCircle className="w-5 h-5 text-green-500" />
                     ) : (
                         <XCircle className="w-5 h-5 text-red-500" />
@@ -149,10 +149,10 @@ function ManageUsers() {
                   <button
                     onClick={() => handleStatusChange(user._id, user.status)}
                     className={`${
-                      user.status === 'Active' ? 'text-red-600 hover:text-red-900' : 'text-green-600 hover:text-green-900'
+                      user?.status === 'Active' ? 'text-red-600 hover:text-red-900' : 'text-green-600 hover:text-green-900'
                     }`}
                   >
-                    {user.status === 'Active' ? 'Suspend' : 'Activate'}
+                    {user?.status === 'Active' ? 'Suspend' : 'Activate'}
                   </button>
                 </td>
               </tr>
