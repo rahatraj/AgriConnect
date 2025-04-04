@@ -79,19 +79,19 @@ const ManageTransactions = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         <div className="bg-white p-4 rounded-lg shadow-md border-l-4 border-primary">
           <h3 className="text-gray-500 text-sm">Total Transactions</h3>
-          <p className="text-2xl font-bold">{stats.total}</p>
+          <p className="text-2xl font-bold">{stats?.total}</p>
         </div>
         <div className="bg-white p-4 rounded-lg shadow-md border-l-4 border-success">
           <h3 className="text-gray-500 text-sm">Completed</h3>
-          <p className="text-2xl font-bold">{stats.total}</p>
+          <p className="text-2xl font-bold">{stats?.total}</p>
         </div>
         <div className="bg-white p-4 rounded-lg shadow-md border-l-4 border-warning">
           <h3 className="text-gray-500 text-sm">Pending</h3>
-          <p className="text-2xl font-bold">{stats.pending}</p>
+          <p className="text-2xl font-bold">{stats?.pending}</p>
         </div>
         <div className="bg-white p-4 rounded-lg shadow-md border-l-4 border-info">
           <h3 className="text-gray-500 text-sm">Total Amount</h3>
-          <p className="text-2xl font-bold">₹{stats.totalAmount}</p>
+          <p className="text-2xl font-bold">₹{stats?.totalAmount}</p>
         </div>
       </div>
 
@@ -108,7 +108,7 @@ const ManageTransactions = () => {
                 setCurrentPage(1);
               }}
             >
-              {Object.entries(transactionTypes).map(([key, value]) => (
+              {Object.entries(transactionTypes)?.map(([key, value]) => (
                 <option key={key} value={key}>{value}</option>
               ))}
             </select>
@@ -161,19 +161,19 @@ const ManageTransactions = () => {
             </tr>
           </thead>
           <tbody>
-            {allTransaction.length > 0 ? (
-              allTransaction.map((tx) => (
+            {allTransaction?.length > 0 ? (
+              allTransaction?.map((tx) => (
                 <tr key={tx._id}>
                   <td>{tx.referenceId}</td>
                   <td>{new Date(tx.transactionDate).toLocaleDateString()}</td>
-                  <td>{tx.user?.fullName || 'N/A'}</td>
-                  <td>{tx.transactionType}</td>
+                  <td>{tx?.user?.fullName || 'N/A'}</td>
+                  <td>{tx?.transactionType}</td>
                   <td className="font-semibold">₹{tx.amount}</td>
                   <td>
                     <span className={`badge ${
                       tx.status === 'Completed' ? 'badge-success' : 'badge-warning'
                     }`}>
-                      {tx.status || 'Completed'}
+                      {tx?.status || 'Completed'}
                     </span>
                   </td>
                 </tr>
