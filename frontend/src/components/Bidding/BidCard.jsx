@@ -26,7 +26,7 @@ function BidCard({ bid }) {
     const interval = setInterval(updateCountdown, 1000);
 
     return () => clearInterval(interval);
-  }, [bid.biddingDeadLine]);
+  }, [bid?.biddingDeadLine]);
 
   return (
     <div className="card bg-white shadow-md p-4 rounded-lg overflow-hidden hover:scale-105 transition duration-200">
@@ -34,8 +34,8 @@ function BidCard({ bid }) {
       <div className="h-48 flex justify-center items-center bg-gray-100">
         {bid?.product?.productImages?.length > 0 ? (
           <img
-            src={bid.product.productImages[0]?.url || null}
-            alt={bid.product.productName}
+            src={bid?.product?.productImages[0]?.url || null}
+            alt={bid?.product?.productName}
             className="w-full h-full object-cover rounded-t-lg"
           />
         ) : (
@@ -72,11 +72,11 @@ function BidCard({ bid }) {
             View Details
           </Link>
           {currentUser?.user?.role === "Farmer" ? (
-            <Link to={`/bid/check-live/${bid._id}`} className="btn btn-primary sm:w-auto">
+            <Link to={`/bid/check-live/${bid?._id}`} className="btn btn-primary sm:w-auto">
               Check Live Bid
             </Link>
           ) : (
-            <Link to={`/bid/check-live/${bid._id}`} className="btn btn-primary sm:w-auto">
+            <Link to={`/bid/check-live/${bid?._id}`} className="btn btn-primary sm:w-auto">
               Bid Now
             </Link>
           )}
