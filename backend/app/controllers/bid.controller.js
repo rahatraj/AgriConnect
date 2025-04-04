@@ -488,14 +488,14 @@ bidCltr.closeBid = async (req, res, next) => {
 };
 
 bidCltr.viewMyOngoingBids = async (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return next(new CustomError("Validation failed.", 400, errors.array()));
-    }
-
     try {
-        const { page = 1, limit = 10, status,category, search, sort = "biddingDeadLine" } = req.query;
-        const userId = (req.currentUser.userId);
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return next(new CustomError("Validation failed.", 400, errors.array()));
+        }
+
+        const { page = 1, limit = 10, status, category, search, sort = "biddingDeadLine" } = req.query;
+        const userId = req.currentUser.userId;
         const role = req.currentUser.role;
 
         if (role !== "Farmer") {
@@ -506,98 +506,67 @@ bidCltr.viewMyOngoingBids = async (req, res, next) => {
         const limitNumber = parseInt(limit, 10);
         const skip = (pageNumber - 1) * limitNumber;
 
-        // Aggregation Pipeline
-        const pipeline = [
-            {
-                $lookup: {
-                    from: "products",
-                    localField: "product",
-                    foreignField: "_id",
-                    as: "product"
-                }
-            },
-            { $unwind: "$product" }, // Unwind product to make it accessible
-            { 
-                $match: { "product.farmer": userId } // Ensure farmer is the logged-in user
-            }
-        ];
+        // Build the Query for Bids  
+        let query = { "product.farmer": userId };
 
-        // Apply Filters
         if (status && status !== "All") {
-            pipeline.push({ $match: { bidStatus: status } });
+            query.bidStatus = status;
         }
 
         if (category) {
-            pipeline.push({ $match: { "product.category": category } });
+            query["product.category"] = category;
         }
 
         if (search) {
-            pipeline.push({
-                $match: {
-                    $or: [
-                        { "product.productName": { $regex: search, $options: "i" } },
-                        { "product.productDescription": { $regex: search, $options: "i" } }
-                    ]
-                }
-            });
+            query["$or"] = [
+                { "product.productName": { $regex: search, $options: "i" } },
+                { "product.productDescription": { $regex: search, $options: "i" } }
+            ];
         }
 
-        // Sorting
+        // Sorting Logic  
         let sortQuery = {};
         if (sort === "basePrice") {
-            sortQuery["basePrice"] = 1;
+            sortQuery.basePrice = 1;
         } else {
-            sortQuery["biddingDeadLine"] = 1;
+            sortQuery.biddingDeadLine = 1; // Default Sorting
         }
-        pipeline.push({ $sort: sortQuery });
 
-        // Pagination
-        pipeline.push({ $skip: skip }, { $limit: limitNumber });
+        // Fetch Bids with Product Details  
+        const bids = await Bid.find({})
+            .populate({
+                path: "product",
+                match: { farmer: userId }, // Ensure the product belongs to the current farmer
+                select: "productName category description"
+            })
+            .sort(sortQuery)
+            .skip(skip)
+            .limit(limitNumber);
 
-        // Fetch Ongoing Bids
-        const bids = await Bid.aggregate(pipeline);
+        // Filter out bids where `product` is null (i.e., doesn't belong to the farmer)
+        const filteredBids = bids.filter(bid => bid.product !== null);
 
-        // Total Count for Pagination
-        const totalCount = await Bid.aggregate([
-            {
-                $lookup: {
-                    from: "products",
-                    localField: "product",
-                    foreignField: "_id",
-                    as: "product"
-                }
-            },
-            { $unwind: "$product" },
-            { $match: { "product.farmer": userId } },
-            { $count: "total" }
-        ]);
+        // Total Count for Pagination  
+        const total = await Bid.countDocuments({ "product.farmer": userId });
 
-        const total = totalCount.length > 0 ? totalCount[0].total : 0;
-
-        if (bids.length === 0) {
+        if (filteredBids.length === 0) {
             return res.status(200).json({
-              success: true,
-              message: "No bids found. Please add products to participate in bidding.",
-              bids: [],
-              pagination: {
-                total: 0,
-                page: pageNumber,
-                limit: limitNumber,
-                totalPages: 0,
-              },
+                success: true,
+                message: "No bids found. Please add products to participate in bidding.",
+                bids: [],
+                pagination: { total: 0, page: pageNumber, limit: limitNumber, totalPages: 0 }
             });
-          }
-          
+        }
 
         return res.status(200).json({
             success: true,
             message: "Ongoing bids fetched successfully.",
-            bids,
+            bids: filteredBids,
             pagination: {
                 total,
                 page: pageNumber,
                 limit: limitNumber,
-                totalPages: Math.ceil(total / limitNumber),
+                totalPages: Math.ceil(total / limitNumber)
             }
         });
 
