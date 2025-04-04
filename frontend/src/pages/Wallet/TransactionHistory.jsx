@@ -12,6 +12,7 @@ const TransactionHistory = () => {
     const { transactions, loading,error } = useSelector((state) => state.wallet);
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("");
+    const [showError, setShowError] = useState(true);
 
     useEffect(() => {
         dispatch(getTransactionHistory());
@@ -43,9 +44,10 @@ const TransactionHistory = () => {
           </div>
         );
       }
-      if(error){
-        <ErrorComponent message={error} />
+      if (error && showError) {
+        return <ErrorComponent message={error} onDismiss={() => setShowError(false)} />;
       }
+      
     return (
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <h1 className="text-2xl sm:text-3xl font-bold text-center mb-4">Transaction History</h1>

@@ -24,7 +24,7 @@ function LiveBiddingPage() {
   const notifications = useSelector((state) => state.notifications.notifications);
   const [bidAmount, setBidAmount] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [showError, setShowError] = useState(true);
   // Fetch bid details and join room
   useEffect(() => {
     if (bidId) {
@@ -106,9 +106,10 @@ function LiveBiddingPage() {
     setBidAmount("");
   };
 
-  if (error) {
-    return <ErrorComponent message={error}/>;
+  if (error && showError) {
+    return <ErrorComponent message={error} onDismiss={() => setShowError(false)} />;
   }
+  
   if (!selectedBid) {
     return (
       <div className="flex justify-center items-center h-screen">

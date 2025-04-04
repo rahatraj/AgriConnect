@@ -11,7 +11,7 @@ function App() {
   const dispatch = useDispatch();
   const { authChecked, isLoggedIn } = useSelector((state) => state.users);
 
-  console.log("authchecked ",authChecked)
+
   useEffect(() => {
     const checkAuth = async () => {
       const hasClientLoginFlag = localStorage.getItem("isLoggedIn") === "true";

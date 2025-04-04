@@ -16,7 +16,8 @@ const FundTransfer = () => {
   const navigate = useNavigate();
   
   const { loading, error, success } = useSelector((state) => state.wallet);
-
+  const [showError, setShowError] = useState(true);
+  
   const [formData, setFormData] = useState(formInitial)
 
   // Handle fund transfer
@@ -48,8 +49,8 @@ const FundTransfer = () => {
         </div>
       );
     }
-    if(error){
-      <ErrorComponent message={error} />
+    if (error && showError) {
+      return <ErrorComponent message={error} onDismiss={() => setShowError(false)} />;
     }
 
   return (

@@ -8,7 +8,8 @@ import ErrorComponent from "../components/common/ErrorComponent";
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const { isLoggedIn, data, authChecked, error } = useSelector((state) => state.users);
   const userRole = data?.user?.role;
-
+  const [showError, setShowError] = useState(true);
+  
   useEffect(() => {
     if (authChecked && !isLoggedIn) {
       toast.error("Please login to continue");
@@ -31,8 +32,8 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
     );
   }
 
-  if (error) {
-    return <ErrorComponent message={error} />;
+  if (error && showError) {
+    return <ErrorComponent message={error} onDismiss={() => setShowError(false)} />;
   }
 
   // Redirect to home if the user role is not allowed

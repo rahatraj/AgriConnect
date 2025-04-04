@@ -14,7 +14,8 @@ function WalletPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate()
     const { wallet, loading, error } = useSelector((state) => state.wallet)
-
+    const [showError, setShowError] = useState(true);
+    
     useEffect(() => {
         dispatch(getWalletDetails());
         if (socket) {
@@ -60,8 +61,8 @@ function WalletPage() {
           </div>
         );
     }
-    if(error){
-       return <ErrorComponent message={error} />
+    if (error && showError) {
+        return <ErrorComponent message={error} onDismiss={() => setShowError(false)} />;
     }
     return (
         <div className="min-h-screen p-4 sm:p-6 bg-base-100">
