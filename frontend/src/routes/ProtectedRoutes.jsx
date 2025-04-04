@@ -17,9 +17,11 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
     }
   }, [authChecked, isLoggedIn, allowedRoles, userRole]);
 
-  if (error) {
-    return <ErrorComponent message={error} />;
+  // Redirect to login if not logged in
+  if (!authChecked && !isLoggedIn) {
+    return <Navigate to="/login" replace />;
   }
+  
 
   if (!authChecked) {
     return (
@@ -29,9 +31,8 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
     );
   }
 
-  // Redirect to login if not logged in
-  if (!isLoggedIn) {
-    return <Navigate to="/login" replace />;
+  if (error) {
+    return <ErrorComponent message={error} />;
   }
 
   // Redirect to home if the user role is not allowed
