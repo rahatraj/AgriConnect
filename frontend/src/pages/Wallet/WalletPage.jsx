@@ -13,8 +13,7 @@ function WalletPage() {
     const socket = useSelector((state) => state.socket.instance);
     const dispatch = useDispatch();
     const navigate = useNavigate()
-    const { wallet, loading, error } = useSelector((state) => state.wallet);
-    // const socket = useSocket();
+    const { wallet, loading, error } = useSelector((state) => state.wallet)
 
     useEffect(() => {
         dispatch(getWalletDetails());
@@ -43,9 +42,27 @@ function WalletPage() {
           </div>
         );
       }
-      if(error){
-        <ErrorComponent message={error} />
-      }
+      if (error === "WALLET_NOT_CREATED") {
+        return (
+          <div className="flex flex-col items-center justify-center h-screen space-y-4">
+            <p className="text-xl text-gray-700 font-semibold">
+                You haven't created a wallet yet.
+            </p>
+            <p className="text-md text-gray-500 max-w-sm">
+                Please update your profile to automatically create your wallet and start managing your transactions.
+            </p>
+            <button
+              className="btn btn-primary"
+              onClick={() => navigate("/profile/update")} // or any logic to trigger wallet creation
+            >
+              Go to Profile
+            </button>
+          </div>
+        );
+    }
+    if(error){
+       return <ErrorComponent message={error} />
+    }
     return (
         <div className="min-h-screen p-4 sm:p-6 bg-base-100">
             <div className="max-w-5xl mx-auto space-y-4 sm:space-y-6">
