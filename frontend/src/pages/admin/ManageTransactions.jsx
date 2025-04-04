@@ -6,7 +6,8 @@ import { fetchAlltransactions } from '../../redux/slices/transactionSlice';
 
 const ManageTransactions = () => {
   const dispatch = useDispatch();
-  const { allTransaction, loading, errors, pagination, stats } = useSelector((state) => state.transactions);
+  const { allTransaction, loading, error, pagination, stats } = useSelector((state) => state.transactions);
+  const [showError, setShowError] = useState(true);
   
   const [selectedType, setSelectedType] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
@@ -67,8 +68,8 @@ const ManageTransactions = () => {
     );
   }
 
-  if (errors) {
-    return <ErrorComponent message={errors} />;
+  if (error && showError) {
+    return <ErrorComponent message={error} onDismiss={() => setShowError(false)} />;
   }
 
   return (

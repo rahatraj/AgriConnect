@@ -19,6 +19,7 @@ import ErrorComponent from '../../components/common/ErrorComponent';
 
 function AdminDashboard() {
   const dispatch = useDispatch()
+  const [showError, setShowError] = useState(true);
   const { allDetails, loading, error } = useSelector((state)=> state.admin)
   const { notifications } = useSelector((state)=> state.notifications.notifications)
 
@@ -50,9 +51,10 @@ function AdminDashboard() {
     );
   }
 
-  if (error) {
-    return <ErrorComponent message={error}/>;
+  if (error && showError) {
+    return <ErrorComponent message={error} onDismiss={() => setShowError(false)} />;
   }
+  
   return (
     <div className="p-6 min-h-screen bg-base-100">
       {/* Page Header */}

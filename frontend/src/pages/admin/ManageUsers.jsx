@@ -9,6 +9,7 @@ import { toast } from 'react-hot-toast';
 function ManageUsers() {
   const dispatch = useDispatch()
   const { allUsers , loading, error } = useSelector((state)=> state.admin)
+  const [showError, setShowError] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterRole, setFilterRole] = useState('all');
   const [filterStatus, setFilterStatus] = useState('all');
@@ -34,9 +35,10 @@ function ManageUsers() {
     );
   }
 
-  if (error) {
-    return <ErrorComponent message={error}/>;
+  if (error && showError) {
+    return <ErrorComponent message={error} onDismiss={() => setShowError(false)} />;
   }
+  
   const handleStatusChange = async (userId, currentStatus) => {
     try {
         const newStatus = currentStatus === "Active" ? "Suspended" : "Active";        
