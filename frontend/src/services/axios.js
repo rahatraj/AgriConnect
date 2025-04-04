@@ -34,7 +34,6 @@ axiosInstance.interceptors.response.use(
             // Unauthorized or token expired
             if (status === 401) {
                 toast.error(data.message || "Session expired. Please log in again.");
-                window.location.href = "/login";
             } 
             else if (status === 403) {
                 toast.error(data.message || "You do not have permission to perform this action.");
