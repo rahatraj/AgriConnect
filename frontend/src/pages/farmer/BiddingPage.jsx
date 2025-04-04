@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllBids } from "../../redux/slices/bidSlice";
+import {fetchOngoingBids } from "../../redux/slices/bidSlice";
 import BidFilters from "../../components/Bidding/BidFilters";
 import PaginationControls from "../../components/Bidding/PaginationControls";
 import BidCard from "../../components/Bidding/BidCard";
@@ -11,7 +11,7 @@ import ErrorComponent from "../../components/common/ErrorComponent";
 
 function AllBidsPage() {
   const dispatch = useDispatch();
-  const { allBids, allBidsPagination, loading,error } = useSelector((state) => state.bids);
+  const { activeBids, pagination, loading,error } = useSelector((state) => state.bids);
 
   // State for filters, search, sorting, and pagination
   const [search, setSearch] = useState("");
@@ -27,7 +27,7 @@ function AllBidsPage() {
 
   // Fetch bids when filters change
   useEffect(() => {
-    dispatch(fetchAllBids({ page, status, category, sort, search }));
+    dispatch(fetchOngoingBids({ page, status, category, sort, search }));
   }, [dispatch, page, status, category, sort, search]);
 
   if (loading) {
@@ -83,7 +83,7 @@ function AllBidsPage() {
       {/* Bids List */}
       {loading ? (
         <p className="text-center text-gray-500">Loading bids...</p>
-      ) : allBids?.length > 0 ? (
+      ) : activeBids?.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
           {allBids.map((bid) => (
             <BidCard key={bid._id} bid={bid} />
@@ -97,7 +97,7 @@ function AllBidsPage() {
       )}
 
       {/* Pagination */}
-      <PaginationControls page={page} setPage={setPage} totalPages={allBidsPagination?.totalPages || 1} />
+      <PaginationControls page={page} setPage={setPage} totalPages={pagination?.totalPages || 1} />
     </div>
   );
 }
