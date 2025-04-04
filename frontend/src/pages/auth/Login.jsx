@@ -14,12 +14,12 @@ const formInitial = {
 function Login() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { data,isLoading, error } = useSelector((state) => state.users);
+    const { data,isLoading, error, isLoggedIn } = useSelector((state) => state.users);
     const [showPassword, setShowPassword] = useState(false);
     const [formData, setFormData] = useState(formInitial);
 
     useEffect(()=> {
-        if (data?.user?.role && window.location.pathname === "/login") {
+        if (isLoggedIn && data?.user?.role && window.location.pathname === "/login") {
             switch (data.user.role) {
                 case "Farmer": navigate('/farmer/dashboard'); break;
                 case "Buyer": navigate('/buyer-dashboard'); break;
@@ -28,7 +28,7 @@ function Login() {
                 default: navigate('/');
             }
         }
-    }, [data?.user?.role, navigate])
+    }, [data?.user?.role, navigate,isLoggedIn])
     const validateForm = () => {
         if (!formData.email.trim()) {
             toast.error("email is required");
