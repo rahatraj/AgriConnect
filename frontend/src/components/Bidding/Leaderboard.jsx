@@ -15,7 +15,7 @@ function Leaderboard({ bidId }) {
       .slice(0, 5);
   }, [bidLeaderboard, bidId]);
 
-  if (!sortedBidders.length) {
+  if (!sortedBidders?.length) {
     return (
       <div className="text-center p-4 bg-gray-100 rounded-lg shadow-md">
         <h2 className="text-lg font-semibold">🏆 Live Leaderboard</h2>
@@ -28,7 +28,7 @@ function Leaderboard({ bidId }) {
     <div className="bg-base-100 p-4 rounded-lg shadow-lg">
       <h2 className="text-lg font-bold text-center">🏆 Live Leaderboard</h2>
       <div className="space-y-3">
-        {sortedBidders.map((bidder, index) => (
+        {sortedBidders?.map((bidder, index) => (
           <div
             key={bidder?._id || index}
             className={`flex justify-between items-center p-3 rounded-lg shadow-md 
