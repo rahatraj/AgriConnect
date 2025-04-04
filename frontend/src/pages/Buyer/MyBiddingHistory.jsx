@@ -10,7 +10,7 @@ import ErrorComponent from "../../components/common/ErrorComponent";
 function MyBiddingHistory() {
   const dispatch = useDispatch();
   const { biddingHistory, loading, error } = useSelector((state) => state.bids);
-
+  const [showError, setShowError] = useState(true);
   const [page, setPage] = useState(1);
   const [category, setCategory] = useState("activeBids");
 
@@ -26,9 +26,10 @@ function MyBiddingHistory() {
     );
   }
 
-  if(error){
-    <ErrorComponent message={error} />
+  if (error && showError) {
+    return <ErrorComponent message={error} onDismiss={() => setShowError(false)} />;
   }
+  
   return (
     <div className="p-6 min-h-screen bg-base-100">
       {/* Page Header */}

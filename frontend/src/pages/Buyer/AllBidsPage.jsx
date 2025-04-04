@@ -14,7 +14,7 @@ function AllBidsPage() {
   const socket = getSocket()
   const dispatch = useDispatch();
   const { allBids, allBidsPagination, loading, error } = useSelector((state) => state.bids);
-
+  const [showError, setShowError] = useState(true);
   // State for filters, search, sorting, and pagination
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("");
@@ -52,8 +52,8 @@ function AllBidsPage() {
       </div>
     );
   }
-  if (error) {
-    return <ErrorComponent message={error}/>;
+  if (error && showError) {
+    return <ErrorComponent message={error} onDismiss={() => setShowError(false)} />;
   }
   return (
     <div className="container mx-auto px-4 py-6">
