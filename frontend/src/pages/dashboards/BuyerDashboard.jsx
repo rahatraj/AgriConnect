@@ -30,7 +30,8 @@ function BuyerDashboard() {
   const { data } = useSelector((state) => state.users);
   const { buyerStats, loading, error } = useSelector((state) => state.bids);
   const notifications = useSelector((state) => state.notifications.notifications);
-
+  const [showError, setShowError] = useState(true);
+  
   useEffect(() => {
     dispatch(fetchBuyerStats());
   }, [dispatch]);
@@ -83,8 +84,8 @@ function BuyerDashboard() {
 
   
  if((dashboardData?.totalActiveBids !== 0 && dashboardData?.lostBids !== 0
-    && dashboardData?.recentBids !== 0 && dashboardData?.wonBids) && error ){
-      return <ErrorComponent message={error}/>
+    && dashboardData?.recentBids !== 0 && dashboardData?.wonBids) && (error && showError) ){
+      return <ErrorComponent message={error} onDismiss={() => setShowError(false)} />;
  }
   const bidData = dashboardData.recentBids.map((bid) => ({
     name: bid.bidTitle,

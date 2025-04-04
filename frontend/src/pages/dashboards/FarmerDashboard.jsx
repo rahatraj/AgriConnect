@@ -16,6 +16,7 @@ const FarmerDashboard = () => {
 
   const { farmerStats, loading, error } = useSelector((state) => state.bids);
   const { notifications } = useSelector((state)=> state.notifications.notifications)
+  const [showError, setShowError] = useState(true);
 
   useEffect(() => {
     if (isConnected) {
@@ -63,8 +64,8 @@ const FarmerDashboard = () => {
     );
   }
 
-  if (error) {
-    return <ErrorComponent message={error} />;
+  if (error && showError) {
+    return <ErrorComponent message={error} onDismiss={() => setShowError(false)} />;
   }
 
   const pieData = [
