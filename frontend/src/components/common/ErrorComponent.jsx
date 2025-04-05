@@ -1,3 +1,5 @@
+import { AlertTriangle } from "lucide-react";
+
 const ErrorComponent = ({ error, onDismiss }) => {
   return (
     <div className="mt-10 flex flex-col items-center justify-center h-64 bg-red-100 text-red-700 p-6 rounded-lg shadow-lg">
