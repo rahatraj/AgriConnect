@@ -15,7 +15,7 @@ export const getWalletDetails = createAsyncThunk(
         // Wallet not created
         return rejectWithValue("WALLET_NOT_CREATED");
       }
-      return rejectWithValue(error?.response?.data?.message || "Failed to fetch wallet details");
+      return rejectWithValue(error?.response?.data || {message : "Failed to fetch wallet details"});
     }
   }
 );
@@ -29,7 +29,7 @@ export const getTransactionHistory = createAsyncThunk(
       console.log(response.data)
       return response.data.transaction;
     } catch (error) {
-      return rejectWithValue(error?.response?.data?.message || "Failed to fetch transactions");
+      return rejectWithValue(error?.response?.data || {message : "Failed to fetch transactions"});
     }
   }
 );
@@ -42,7 +42,7 @@ export const addFunds = createAsyncThunk(
       const response = await axiosInstance.post("/wallets/add-funds", { amount });
       return response.data;
     } catch (error) {
-      return rejectWithValue(error?.response?.data?.message || "Failed to add funds");
+      return rejectWithValue(error?.response?.data || {message : "Failed to add funds"});
     }
   }
 );
@@ -53,7 +53,7 @@ export const verifyPayment = createAsyncThunk(
         const response = await axiosInstance.post("/wallets/verify-payment", paymentData);
         return response.data;
       } catch (error) {
-        return rejectWithValue(error?.response?.data?.message || "Payment verification failed");
+        return rejectWithValue(error?.response?.data || {message : "Payment verification failed"});
       }
     }
   );
@@ -65,7 +65,7 @@ export const withdrawFunds = createAsyncThunk(
       const response = await axiosInstance.post("/wallets/withdraw", { amount });
       return response.data;
     } catch (error) {
-      return rejectWithValue(error?.response?.data?.message || "Failed to withdraw funds");
+      return rejectWithValue(error?.response?.data || {message : "Failed to withdraw funds"});
     }
   }
 );
@@ -79,7 +79,7 @@ export const transferFunds = createAsyncThunk(
       const response = await axiosInstance.post("/wallets/transfer", formData)
       console.log(response.data)
     } catch (error) {
-      return rejectWithValue(error?.response?.data?.message)
+      return rejectWithValue(error?.response?.data || {message : "Failed to transafer funds"});
     }
   }
 )

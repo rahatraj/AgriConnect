@@ -51,7 +51,7 @@ function AppRoutes() {
                     <Route 
                         path='/wallet' 
                         element={
-                            <ProtectedRoute allowedRoles={["Farmer", "Buyer", "StorageOwner"]}>
+                            <ProtectedRoute allowedRoles={["Farmer", "Buyer", "StorageOwner", "Admin"]}>
                                 <WalletPage />
                             </ProtectedRoute>
                         } 
@@ -59,7 +59,7 @@ function AppRoutes() {
                     <Route 
                         path='/wallet/add-funds' 
                         element={
-                            <ProtectedRoute allowedRoles={["Farmer", "Buyer", "StorageOwner"]}>
+                            <ProtectedRoute allowedRoles={["Farmer", "Buyer", "StorageOwner", "Admin"]}>
                                 <AddFundsPage />
                             </ProtectedRoute>
                         }     
@@ -67,7 +67,7 @@ function AppRoutes() {
                     <Route 
                         path='/wallet/getfullhistory' 
                         element={
-                            <ProtectedRoute allowedRoles={["Farmer", "Buyer", "StorageOwner"]}>
+                            <ProtectedRoute allowedRoles={["Farmer", "Buyer", "StorageOwner", "Admin"]}>
                                 <TransactionHistory />
                             </ProtectedRoute>
                         }
@@ -75,7 +75,7 @@ function AppRoutes() {
                     <Route 
                         path='/wallet/fundtransfer' 
                         element={
-                            <ProtectedRoute allowedRoles={["Farmer", "Buyer", "StorageOwner"]}>
+                            <ProtectedRoute allowedRoles={["Farmer", "Buyer", "StorageOwner","Admin"]}>
                                 <FundTransfer />
                             </ProtectedRoute>   
                         }
@@ -85,7 +85,7 @@ function AppRoutes() {
                     <Route 
                         path='/profile' 
                         element={
-                            <ProtectedRoute allowedRoles={["Farmer", "Buyer", "StorageOwner"]}>
+                            <ProtectedRoute allowedRoles={["Farmer", "Buyer", "StorageOwner","Admin"]}>
                                 <ProfilePage />
                             </ProtectedRoute>     
                         }    
@@ -93,7 +93,7 @@ function AppRoutes() {
                     <Route
                         path='/profile/update'
                         element={
-                            <ProtectedRoute allowedRoles={["Farmer", "Buyer", "StorageOwner"]}>
+                            <ProtectedRoute allowedRoles={["Farmer", "Buyer", "StorageOwner","Admin"]}>
                                 <ProfileUpdatePage />
                             </ProtectedRoute>
                         }
@@ -258,7 +258,7 @@ function AppRoutes() {
                     />
 
                     <Route 
-                        path='/manage-bids'
+                        path="/payout"
                         element={
                             <ProtectedRoute allowedRoles={["Admin"]}>
                                 <Payout />

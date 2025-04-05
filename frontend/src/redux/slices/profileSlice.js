@@ -8,7 +8,7 @@ export const getProfile = createAsyncThunk(
             const response = await axiosInstance.get("/users/profile")
             return response.data.profile
         } catch (error) {
-            return rejectWithValue(error?.response?.data?.message)
+            return rejectWithValue(error?.response?.data || {message : "Failed to load the profiel" })
         }
     }
 )
@@ -19,7 +19,7 @@ export const updateProfile = createAsyncThunk(
             const response = await axiosInstance.post("/users/update/profile", formData)
             return response.data;
         } catch (error) {
-            rejectWithValue(error?.response?.data?.message)
+            return rejectWithValue(error?.response?.data || {message : "Failed to update the profiel" })
         }
     }
 )

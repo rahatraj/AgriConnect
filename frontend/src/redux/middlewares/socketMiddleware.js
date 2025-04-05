@@ -3,7 +3,6 @@ import { setSocketId, setConnectionStatus, } from "../slices/socketSlice";
 import { updateBidLive, bidClosedUpdate, updateBuyerStats, updateFarmerStats, addNewBid } from "../slices/bidSlice";
 import { addNotification } from "../slices/NotificationSlice";
 
-
 let socket = null;
 const baseURL=import.meta.env.VITE_API_URL
 const localURL="http://localhost:3000/api/v1"
@@ -13,7 +12,7 @@ const socketMiddleware = (store) => (next) => (action) => {
             if (!socket) {
                 socket = io(baseURL, {
                     withCredentials: true,
-                    transports: ["websocket"],
+                    transports: ["websocket", "polling"],
                     autoConnect: true, // Auto-reconnect on refresh
                 });
 

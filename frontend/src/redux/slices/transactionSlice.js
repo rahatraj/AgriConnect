@@ -9,7 +9,7 @@ export const fetchAlltransactions = createAsyncThunk(
             console.log(response.data)
             return response.data;
         } catch (error) {
-            return rejectWithValue(error?.response?.data?.message || "Failed to fetch transactions");
+            return rejectWithValue(error?.response?.data || {message : "Failed to fetch transactions"});
         }
     }
 );

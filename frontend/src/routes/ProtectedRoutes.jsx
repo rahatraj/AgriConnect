@@ -18,20 +18,15 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
     }
   }, [authChecked, isLoggedIn, allowedRoles, userRole]);
 
+  if (!authChecked) {
+    return null;
+  }
+  
   // Redirect to login if not logged in
-  if (!authChecked && !isLoggedIn) {
+  if (!isLoggedIn) {
     return <Navigate to="/login" replace />;
   }
   
-
-  if (!authChecked) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <Loader className="size-10 animate-spin" />
-      </div>
-    );
-  }
-
   if (error && showError) {
     return <ErrorComponent message={error} onDismiss={() => setShowError(false)} />;
   }

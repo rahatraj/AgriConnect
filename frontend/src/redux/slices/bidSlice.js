@@ -9,7 +9,7 @@ export const startBidding = createAsyncThunk(
       const response = await axiosInstance.post(`/bids/start/${productId}`, bidData);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error?.response?.data?.message || "Failed to start bidding");
+      return rejectWithValue(error?.response?.data || { message : "Failed to start bidding"} );
     }
   }
 );
@@ -23,7 +23,7 @@ export const placeBid = createAsyncThunk(
       const response = await axiosInstance.post(`/bids/${bidId}/place`, { bidAmount,productId });
       return response.data;
     } catch (error) {
-      return rejectWithValue(error?.response?.data?.message || "Failed to place bid");
+      return rejectWithValue(error?.response?.data || { message : "Failed to place a bid"} );
     }
   }
 );
@@ -38,7 +38,7 @@ export const fetchOngoingBids = createAsyncThunk(
       );
       return response.data;
     } catch (error) {
-      return rejectWithValue(error?.response?.data?.message || "Failed to fetch ongoing bids");
+      return rejectWithValue(error?.response?.data || { message : "Failed to fetch ongoing bids"} );
     }
   }
 );
@@ -51,7 +51,7 @@ export const fetchLiveBid = createAsyncThunk(
       const response = await axiosInstance.get(`/bids/${bidId}/details`);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error?.response?.data?.message || "Failed to fetch live bid details");
+      return rejectWithValue(error?.response?.data || { message : "Failed to fetch live bid"} );
     }
   }
 );
@@ -64,7 +64,7 @@ export const closeBid = createAsyncThunk(
       const response = await axiosInstance.post(`/bids/${bidId}/close`);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error?.response?.data?.message || "Failed to close bid");
+      return rejectWithValue(error?.response?.data || { message : "Failed to close a bid"} );
     }
   }
 );
@@ -78,7 +78,7 @@ export const fetchAllBids = createAsyncThunk(
       const response = await axiosInstance.get(`/bids/list?${queryParams}`);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error?.response?.data?.message || "Failed to fetch all bids");
+      return rejectWithValue(error?.response?.data || { message : "Failed to all bids"} );
     }
   }
 );
@@ -90,7 +90,7 @@ export const fetchFarmerStats = createAsyncThunk(
       const response = await axiosInstance.get("/bids/stats")
       return response.data;
     } catch (error) {
-      return rejectWithValue(error?.response?.data?.error)
+      return rejectWithValue(error?.response?.data || { message : "Failed to fetch farmers stats"} );
     }
   }
 )
@@ -102,7 +102,7 @@ export const fetchBuyerStats = createAsyncThunk(
         const response = await axiosInstance.get("/bids/stats/buyer")
         return response.data;
     } catch (error) {
-      return rejectWithValue(error?.response?.data?.message)
+      return rejectWithValue(error?.response?.data || { message : "Failed to fetch buyer stats"} );
     }
   }
 )
@@ -113,7 +113,7 @@ export const fetchBiddingHistory = createAsyncThunk(
       const response = await axiosInstance.get(`/bids/myhistory?page=${page}&limit=${limit}&category=${category}`)
       return response.data;
     } catch (error) {
-      return rejectWithValue(error?.response?.data?.message)
+      return rejectWithValue(error?.response?.data || { message : "Failed to fetch bidding history"} );
     }
   }
 )

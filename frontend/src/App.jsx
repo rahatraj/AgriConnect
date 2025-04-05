@@ -12,9 +12,9 @@ function App() {
   const { authChecked, isLoggedIn } = useSelector((state) => state.users);
 
 
+  const hasClientLoginFlag = localStorage.getItem("isLoggedIn") === "true";
   useEffect(() => {
     const checkAuth = async () => {
-      const hasClientLoginFlag = localStorage.getItem("isLoggedIn") === "true";
       if (!authChecked && hasClientLoginFlag) {
         try {
           await dispatch(fetchCurrentUser()).unwrap();
@@ -40,6 +40,14 @@ function App() {
     }
   }, [dispatch, authChecked, isLoggedIn]);
 
+  if (!authChecked && hasClientLoginFlag) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loader className="size-10 animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="bg-base-100 min-h-screen">
@@ -47,7 +55,7 @@ function App() {
         <div className="container mx-auto px-2 py-16">
           <AppRoutes />
         </div>
-        <Toaster position="top-right" reverseOrder={false} />
+        <Toaster position="bottom-right" reverseOrder={false} />
       </div>
     </>
   );

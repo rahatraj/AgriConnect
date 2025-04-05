@@ -9,7 +9,7 @@ export const fetchCurrentUser = createAsyncThunk(
       const response = await axiosInstance.get("/users/me");
       return response.data;
     } catch (error) {
-      return rejectWithValue(error?.response?.data?.message || "Session expired.");
+      return rejectWithValue(error?.response?.data || {message : "Session expired."});
     }
   }
 );
@@ -22,7 +22,7 @@ export const userRegister = createAsyncThunk(
       const response = await axiosInstance.post("/users/register", formData);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || "Registration failed");
+      return rejectWithValue(error?.response?.data||{ message : "Regirtration failed"})
     }
   }
 );
@@ -35,7 +35,7 @@ export const userLogin = createAsyncThunk(
       const response = await axiosInstance.post("/users/login", formData);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error?.response?.data?.message);
+      return rejectWithValue(error?.response?.data||{ message : "Login failed"});
     }
   }
 );
@@ -47,7 +47,7 @@ export const userLogout = createAsyncThunk(
       const response = await axiosInstance.post("/users/logout");
       return true;
     } catch (error) {
-      return rejectWithValue(error?.response?.data?.message || "Logout failed");
+      return rejectWithValue(error?.response?.data||{ message : "Logout failed"});
     }
   }
 );

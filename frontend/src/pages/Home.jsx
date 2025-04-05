@@ -17,7 +17,7 @@ function Home() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/register" className="btn btn-primary">Get Started</Link>
-            <Link to="/bid-products" className="btn btn-outline">Explore Products</Link>
+            <Link to="/login" className="btn btn-outline">Explore Products</Link>
           </div>
         </div>
       </section>

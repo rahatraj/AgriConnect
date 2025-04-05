@@ -11,7 +11,7 @@ export const getProductList = createAsyncThunk(
       );
       return response.data;
     } catch (error) {
-      return rejectWithValue(error?.response?.data?.message || "Failed to fetch products");
+      return rejectWithValue(error?.response?.data || {message : "Failed to load product list"})
     }
   }
 );
@@ -26,7 +26,7 @@ export const createProductList = createAsyncThunk(
       });
       return response.data;
     } catch (error) {
-      return rejectWithValue(error?.response?.data?.message || "Failed to create product");
+       return rejectWithValue(error?.response?.data || {message : "Failed to create product"});
     }
   }
 );
@@ -39,7 +39,7 @@ export const deleteProduct = createAsyncThunk(
       await axiosInstance.delete(`/products/delete/${productId}`);
       return productId; // Returning deleted productId for removal from state
     } catch (error) {
-      return rejectWithValue(error?.response?.data?.message || "Failed to delete product");
+      return rejectWithValue(error?.response?.data || {message : "Failed to delete product"})
     }
   }
 );
@@ -52,7 +52,7 @@ export const showProductDetails = createAsyncThunk(
       const response = await axiosInstance.get(`/products/show/${productId}`);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error?.response?.data?.message || "Failed to fetch product details");
+      return rejectWithValue(error?.response?.data || {message : "Failed to load product details"})
     }
   }
 );
@@ -67,7 +67,7 @@ export const updateProduct = createAsyncThunk(
       });
       return response.data;
     } catch (error) {
-      return rejectWithValue(error?.response?.data?.message || "Failed to update product");
+      return rejectWithValue(error?.response?.data || {message : "Failed to update product"});
     }
   }
 );

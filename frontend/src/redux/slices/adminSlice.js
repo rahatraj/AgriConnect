@@ -8,7 +8,7 @@ export const fetchAllUsers = createAsyncThunk(
             const response = await axiosInstance.get(`/users/list?page=${page}`)
             return response.data
         } catch (error) {
-            return rejectWithValue(error?.response?.data?.message)
+            return rejectWithValue(error?.response?.data || {message : "failed to fetch all the users"})
         }
     }
 )
@@ -20,7 +20,7 @@ export const fetchAllDetails = createAsyncThunk(
             const response = await axiosInstance.get("/users/getalldetails")
             return response.data
         } catch (error) {
-            return rejectWithValue(error?.response?.data?.message)
+            return rejectWithValue(error?.response?.data || {message : "failed to fetch all the details"})
         }
     }
 )
@@ -32,7 +32,7 @@ export const userActivation = createAsyncThunk(
             const response = await axiosInstance.put(`/users/${userId}/useractivation`, { userStatus })
             return response.data
         } catch (error) {
-            return rejectWithValue(error?.response?.data?.message)
+            return rejectWithValue(error?.response?.data || {message : "failed to activation of the users"})
         }
     }
 )
