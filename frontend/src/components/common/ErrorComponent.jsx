@@ -28,3 +28,4 @@ const ErrorComponent = ({ error, onDismiss }) => {
     </div>
   );
 };
+export default ErrorComponent;

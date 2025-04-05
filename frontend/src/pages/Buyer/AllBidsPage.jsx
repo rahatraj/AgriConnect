@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllBids, updateBidLive } from "../../redux/slices/bidSlice"; // ✅ Import updateBidLive
+import { fetchAllBids, updateBidLive } from "../../redux/slices/bidSlice"; 
 import BidFilters from "../../components/Bidding/BidFilters";
 import PaginationControls from "../../components/Bidding/PaginationControls";
 import BidCard from "../../components/Bidding/BidCard";
