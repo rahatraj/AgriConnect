@@ -486,7 +486,6 @@ bidCltr.closeBid = async (req, res, next) => {
         next(error);
     }
 };
-
 bidCltr.viewMyOngoingBids = async (req, res, next) => {
     try {
         const errors = validationResult(req);
@@ -494,7 +493,15 @@ bidCltr.viewMyOngoingBids = async (req, res, next) => {
             return next(new CustomError("Validation failed.", 400, errors.array()));
         }
 
-        const { page = 1, limit = 10, status, category, search, sort = "biddingDeadLine" } = req.query;
+        const {
+            page = 1,
+            limit = 10,
+            status,
+            category,
+            search,
+            sort = "biddingDeadLine"
+        } = req.query;
+
         const userId = req.currentUser.userId;
         const role = req.currentUser.role;
 
@@ -506,7 +513,7 @@ bidCltr.viewMyOngoingBids = async (req, res, next) => {
         const limitNumber = parseInt(limit, 10);
         const skip = (pageNumber - 1) * limitNumber;
 
-        // Build the Query for Bids  
+        // Build Query
         let query = { "product.farmer": userId };
 
         if (status && status !== "All") {
@@ -524,32 +531,24 @@ bidCltr.viewMyOngoingBids = async (req, res, next) => {
             ];
         }
 
-        // Sorting Logic  
-        let sortQuery = {};
-        if (sort === "basePrice") {
-            sortQuery.basePrice = 1;
-        } else {
-            sortQuery.biddingDeadLine = 1; // Default Sorting
-        }
+        // Sorting
+        const sortQuery = (sort === "basePrice")
+            ? { basePrice: 1 }
+            : { biddingDeadLine: 1 };
 
-        // Fetch Bids with Product Details  
-        const bids = await Bid.find({})
+        // Fetch Bids
+        const bids = await Bid.find(query)
             .populate({
                 path: "product",
-                match: { farmer: userId }, // Ensure the product belongs to the current farmer
-                select: "productName category description productImages"
+                select: "productName category productDescription productImages"
             })
             .sort(sortQuery)
             .skip(skip)
             .limit(limitNumber);
 
-        // Filter out bids where `product` is null (i.e., doesn't belong to the farmer)
-        const filteredBids = bids.filter(bid => bid.product !== null);
+        const total = await Bid.countDocuments(query);
 
-        // Total Count for Pagination  
-        const total = await Bid.countDocuments({ "product.farmer": userId });
-
-        if (filteredBids.length === 0) {
+        if (total === 0) {
             return res.status(200).json({
                 success: true,
                 message: "No bids found. Please add products to participate in bidding.",
@@ -561,7 +560,7 @@ bidCltr.viewMyOngoingBids = async (req, res, next) => {
         return res.status(200).json({
             success: true,
             message: "Ongoing bids fetched successfully.",
-            bids: filteredBids,
+            bids,
             pagination: {
                 total,
                 page: pageNumber,
