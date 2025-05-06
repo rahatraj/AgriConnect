@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchCurrentUser, setAuthChecked, clearUserState } from './redux/slices/userSlice';
 import { Loader } from 'lucide-react';
+import FloatingChatbot from './chatbot/FloatingChatbot';
 
 function App() {
   const dispatch = useDispatch();
@@ -55,6 +56,7 @@ function App() {
         <div className="container mx-auto px-2 py-16">
           <AppRoutes />
         </div>
+        {isLoggedIn && <FloatingChatbot />}
         <Toaster position="bottom-right" reverseOrder={false} />
       </div>
     </>

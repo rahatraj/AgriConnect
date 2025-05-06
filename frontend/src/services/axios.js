@@ -2,8 +2,9 @@ import axios from 'axios'
 import toast from 'react-hot-toast';
 
 const BASE_URL = import.meta.env.VITE_API_URL
+const LOCAL_URL = import.meta.env.VITE_LOCAL_URL
 const axiosInstance = axios.create({
-    baseURL: BASE_URL,
+    baseURL: LOCAL_URL,
     withCredentials: true, // This is important for handling cookies
     timeout: 15000, // 15 seconds timeout
 });
