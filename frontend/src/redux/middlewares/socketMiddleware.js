@@ -17,7 +17,7 @@ const socketMiddleware = (store) => (next) => (action) => {
                 });
 
                 socket.on("connect", () => {
-                    console.log("✅ Socket initialized:", socket);
+                    console.log(" Socket initialized:", socket);
                     console.log("Connected to the socket.io Server", socket.id);
                     store.dispatch(setSocketId(socket.id));
                     store.dispatch(setConnectionStatus(true));
