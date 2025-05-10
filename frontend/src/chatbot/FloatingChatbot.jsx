@@ -1,7 +1,6 @@
-// src/components/Chatbot/FloatingChatbot.jsx
 import { useState } from "react";
 import { MessageCircle } from "lucide-react";
-import Chatbot from "./chatbot";
+import Chatbot from './Chatbot.jsx'
 
 
 const FloatingChatbot = () => {
