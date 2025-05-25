@@ -44,6 +44,9 @@ function AppRoutes() {
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
 
+            {/* fallback  */}
+            <Route path="*" element={<Navigate to="/" />} />
+
             {/* Login based routes and for every roles */}
 
                 <>
