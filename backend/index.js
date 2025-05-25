@@ -13,7 +13,7 @@ import storageTransactionRoutes from './app/routes/storageTransaction.routes.js'
 import walletRoutes from './app/routes/wallet.routes.js'
 import errorHandler from './app/middlewares/errorHandler.js'
 import transactionRoutes from './app/routes/transaction.routes.js'
-import { startBidClosingCron } from './app/controllers/cron/bidCron.js'
+
 
 // Load environment variables
 config()
@@ -67,7 +67,6 @@ const startServer = async () => {
         await configuredDB()
         server.listen(PORT, () => {
             console.log(`Server is running on port ${PORT} in ${process.env.NODE_ENV} mode`)
-            startBidClosingCron()
         })
     } catch (error) {
         console.error('Failed to start server:', error)
