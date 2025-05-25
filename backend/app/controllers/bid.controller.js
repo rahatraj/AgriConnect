@@ -61,8 +61,13 @@ bidCltr.startBidding = async(req,res,next) => {
 
         // Populate the bid with necessary information
         const populatedBid = await Bid.findById(savedBid._id)
-            .populate('product')
-            .populate('farmer', 'fullName email')
+            .populate({
+                    path: 'product',
+                    populate: {
+                        path: 'farmer',
+                        select: 'fullName email'
+                    }
+                })
             .lean();
 
         // Emit new bid event
@@ -513,31 +518,38 @@ bidCltr.viewMyOngoingBids = async (req, res, next) => {
         const limitNumber = parseInt(limit, 10);
         const skip = (pageNumber - 1) * limitNumber;
 
-        // Build Query
-        let query = { "product.farmer": userId };
-
-        if (status && status !== "All") {
-            query.bidStatus = status;
-        }
-
-        if (category) {
-            query["product.category"] = category;
-        }
+        // Step 1: Filter farmer's products
+        let productFilter = { farmer: userId };
+        if (category) productFilter.category = category;
 
         if (search) {
-            query["$or"] = [
-                { "product.productName": { $regex: search, $options: "i" } },
-                { "product.productDescription": { $regex: search, $options: "i" } }
+            productFilter.$or = [
+                { productName: { $regex: search, $options: "i" } },
+                { productDescription: { $regex: search, $options: "i" } }
             ];
         }
 
-        // Sorting
+        const farmerProducts = await Product.find(productFilter).select("_id");
+        const productIds = farmerProducts.map(p => p._id);
+
+        if (productIds.length === 0) {
+            return res.status(200).json({
+                success: true,
+                message: "No products found. Please add products to participate in bidding.",
+                bids: [],
+                pagination: { total: 0, page: pageNumber, limit: limitNumber, totalPages: 0 }
+            });
+        }
+
+        // Step 2: Filter bids on those products
+        let bidQuery = { product: { $in: productIds } };
+        if (status && status !== "All") bidQuery.bidStatus = status;
+
         const sortQuery = (sort === "basePrice")
             ? { basePrice: 1 }
             : { biddingDeadLine: 1 };
 
-        // Fetch Bids
-        const bids = await Bid.find(query)
+        const bids = await Bid.find(bidQuery)
             .populate({
                 path: "product",
                 select: "productName category productDescription productImages"
@@ -546,16 +558,7 @@ bidCltr.viewMyOngoingBids = async (req, res, next) => {
             .skip(skip)
             .limit(limitNumber);
 
-        const total = await Bid.countDocuments(query);
-
-        if (total === 0) {
-            return res.status(200).json({
-                success: true,
-                message: "No bids found. Please add products to participate in bidding.",
-                bids: [],
-                pagination: { total: 0, page: pageNumber, limit: limitNumber, totalPages: 0 }
-            });
-        }
+        const total = await Bid.countDocuments(bidQuery);
 
         return res.status(200).json({
             success: true,
@@ -573,6 +576,7 @@ bidCltr.viewMyOngoingBids = async (req, res, next) => {
         next(error);
     }
 };
+
 
 
 bidCltr.viewBidDetails = async(req,res,next)=> {
